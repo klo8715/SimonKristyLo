@@ -60,7 +60,7 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 		ButtonInterfaceKristyLo b = null;
 		for(MoveInterfaceKristyLo v: sequence){
 			if(b!= null)b.dim();
-			b = v.getAButton();
+			b = v.getButton();
 			b.highlight();
 			try {
 				Thread.sleep((long)(2000*(2.0/(roundNumber+2))));
@@ -89,16 +89,23 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 		
 	}
 
+
 	private MoveInterfaceKristyLo randomMove() {
 		ButtonInterfaceKristyLo b;
 		int NewBut = (int) (Math.random()*button.length);
-		return getMove[b];
+		return getMove(b);
 	}
 
-	private ProgressInterfaceKristyLo getProgress() {
+	private MoveInterfaceKristyLo getMove(ButtonInterfaceKristyLo b) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	private ProgressInterfaceKristyLo getProgress() 
+	{
+		return new Progress();
+	}
+		
 
 	private void addButtons() {
 		/**
@@ -106,20 +113,18 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 		*/
 		Color[] color = {Color.blue, Color.red,Color.green,Color.yellow};
 		int numberOfButtons = 4;
-		button = new ButtonInterfaceKristyLo[numberOfButtons];
+		button = new ButtonInterfaceKristyLo[4];
 		for(int i = 0; i < numberOfButtons; i++ )
 		{
-			
-
-				button.setColor(color[i]);
-			    button.setX(160 + (int)(100*Math.cos(i*2*Math.PI/(numberOfButtons))));
-			    button.setY(200 - (int)(100*Math.sin(i*2*Math.PI/(numberOfButtons))));
-			    final ButtonInterface b = buttons[i];
-			    b.dim();
-			    button[i].setAction(new Action(){
+			button[i].setColor(color[i]);
+			button[i].setX(160 + (int)(100*Math.cos(i*2*Math.PI/(numberOfButtons))));
+			button[i].setY(200 - (int)(100*Math.sin(i*2*Math.PI/(numberOfButtons))));
+			button[i].dim();
+			final ButtonInterfaceKristyLo b = button[i];
+			button[i].setAction(new Action(){
 
 			    	public void act(){
-			    		if(acceptingInput && button == sequence.get(sequenceIndex).getAButton())
+			    		if(acceptingInput && b == sequence.get(sequenceIndex).getButton())
 			    		{
 			    			sequenceIndex++;
 			    		}
@@ -154,6 +159,10 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 		public void gameOver() {
 			progress.gameOver();
     	}
+		private ButtonInterfaceKristyLo getAButton() {
+			return new B	utton();
+		}
 
 
 }
+		

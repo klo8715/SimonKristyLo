@@ -22,6 +22,10 @@ public interface ButtonInterfaceKristyLo extends Clickable{
 
 	
 	void setName(String name);
+	
+	void setX(int num);
+	
+	void setY(int num);
 
 
 
