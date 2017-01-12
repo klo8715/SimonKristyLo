@@ -41,12 +41,15 @@ public class Button extends Components implements SimonKristyLo.ButtonInterfaceK
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		if(highlight) {
 			g.setColor(this.c);
+			g.fillOval(0, 0, 65, 65);
+			g.setColor(Color.black);
+			g.drawOval(0, 0, 65, 65);
 		}
 		else {
 			g.setColor(Color.gray);
-			g.fillOval(this.getX(), this.getY(), 65, 65);
+			g.fillOval(0, 0, 65, 65);
 			g.setColor(Color.black);
-			g.drawOval(this.getX(), this.getY(), 65, 65);
+			g.drawOval(0, 0, 65, 65);
 		}
 	}
 
