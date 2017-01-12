@@ -1,92 +1,74 @@
 package partnerCodeHere;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import GUI.Components.Action;
-import SimonKristyLo.ButtonInterfaceKristyLo;
+import GUI.Components.Components;
 
-public class Button implements ButtonInterfaceKristyLo{
-	
-	private static int width = 100;
-	private static int height = 100;
+public class Button extends Components implements SimonKristyLo.ButtonInterfaceKristyLo {
+
 	private Action action;
-	private Color color;
+	private Color c;
 	private boolean highlight;
-
+	
 	public Button() {
-		super();
-	}
-	@Override
-	public boolean isHovered(int x, int y) {
-		// TODO Auto-generated method stub
-		return false;
+		super(0,0,70,70);
+		highlight = false;
 	}
 
-	@Override
+	public boolean isHovered(int x, int y) {
+		return x>getX() && x<getX()+getWidth() && y > getY() && y<getY()+getHeight();
+	}
+
 	public void act() {
 		action.act();
 	}
-
-	@Override
-	public BufferedImage getImage() {
-		return null;
-	}
-
-	@Override
-	public int getX() {
-		return 0;
-	}
-
-	@Override
-	public int getY() {
-		return 0;
-	}
-
-	@Override
-	public int getWidth() {
-		return 0;
-	}
-
-	@Override
-	public int getHeight() {
-		return 0;
-	}
-
-	@Override
-	public boolean isAnimated() {
-		return false;
-	}
-
-	@Override
-	public void update() {
-		
-	}
-
-	@Override
+	
 	public void setColor(Color color) {
-		this.color = color;
+		this.c = color;
 		update();
 	}
 
-	@Override
-	public void highlight() {
-
-	}
-
-	@Override
-	public void dim() {
-		
-	}
-
-	@Override
 	public void setAction(Action action) {
 		this.action = action;
 	}
 
 	@Override
-	public void setName(String name) {
-		
+	public void update(Graphics2D g) {
+		g = clear();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		if(highlight) {
+			g.setColor(this.c);
+		}
+		else {
+			g.setColor(Color.gray);
+			g.fillOval(this.getX(), this.getY(), 65, 65);
+			g.setColor(Color.black);
+			g.drawOval(this.getX(), this.getY(), 65, 65);
+		}
 	}
 
+	
+	private String name;
+	public void setName(String s){
+		this.name = s;
+	}
+	
+	public String toString(){
+		return name;
+	}
+
+	@Override
+	public void highlight() {
+		highlight = true;
+		update();
+	}
+
+	@Override
+	public void dim() {
+		highlight = false;
+		update();
+	}
 }
