@@ -36,4 +36,10 @@ class Progress extends Component implements ProgressInterfaceKristyLo
 		
 	}
 
+	@Override
+	public void gameOver() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
