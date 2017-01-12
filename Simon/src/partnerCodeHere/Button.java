@@ -2,13 +2,10 @@ package partnerCodeHere;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 
 import GUI.Components.Action;
 import GUI.Components.Components;
-import Simon.ButtonInterfaceKristyLo;
 
 public class Button extends Components implements SimonKristyLo.ButtonInterfaceKristyLo {
 
