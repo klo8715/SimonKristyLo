@@ -8,6 +8,10 @@ import GUI.ClickableScreen;
 import GUI.Components.Action;
 import GUI.Components.TextLabel;
 import GUI.Components.Visible;
+import partnerCodeHere.Button;
+import partnerCodeHere.Move;
+import partnerCodeHere.Progress;
+
 
 public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 
@@ -27,8 +31,8 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 
 	@Override
 	public void run(){
-	    label.setText("");
-	    nextRound();
+		label.setText("");
+		nextRound();
 	}
 
 	private void nextRound() {
@@ -42,7 +46,7 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 		changeText("Your Turn");
 		acceptingInput = true;
 		sequenceIndex = 0;
-		
+
 	}
 
 	private void changeText(String string) 
@@ -53,7 +57,7 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 	}
 	private void playSequence()
 	{
@@ -69,12 +73,12 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 			}
 		}
 		b.dim();
-			
+
 	}
 
 	@Override
 	public void initAllObjects(List<Visible> viewObjects) {
-		addButtons();
+		addButtons(viewObjects);
 		progress = getProgress();
 		label = new TextLabel(130,230,300,40,"Let's play Simon!");
 		sequence = new ArrayList<MoveInterfaceKristyLo>();
@@ -85,75 +89,79 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 		roundNumber = 0;
 		viewObjects.add(progress);
 		viewObjects.add(label);
-		
-		
+
+
 	}
 
 	private MoveInterfaceKristyLo randomMove() {
-		ButtonInterfaceKristyLo b;
-		int NewBut = (int) (Math.random()*button.length);
-		return getMove[b];
+		int random = (int) (Math.random() * button.length);
+		if (random == lastSelectedButton) {
+			random = (int) (Math.random() * button.length);
+		}
+		lastSelectedButton = random;
+		return new Move(button[lastSelectedButton]);
 	}
 
 	private ProgressInterfaceKristyLo getProgress() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Progress(40,40,200,60);
 	}
 
-	private void addButtons() {
+	public ButtonInterfaceKristyLo getAButton(){
+		return new Button();
+	}
+
+	private void addButtons(List<Visible> viewObjects) {
 		/**
 		Placeholder until partner finishes implementation of ProgressInterface
-		*/
-		Color[] color = {Color.blue, Color.red,Color.green,Color.yellow};
-		int numberOfButtons = 4;
-		button = new ButtonInterfaceKristyLo[numberOfButtons];
-		for(int i = 0; i < numberOfButtons; i++ )
-		{
-			
+		 */
+		int numOfButtons = 4;
+		Color[] colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
+		button = new ButtonInterfaceKristyLo[numOfButtons];
+		progress = getProgress();
+		for (int i = 0; i < numOfButtons; i++) {
+			button[i] = getAButton();
+			button[i].setColor(colors[i]);
+			final ButtonInterfaceKristyLo b = button[i];
+			b.dim();
+			button[i].setAction(new Action(){
 
-				button.setColor(color[i]);
-			    button.setX(160 + (int)(100*Math.cos(i*2*Math.PI/(numberOfButtons))));
-			    button.setY(200 - (int)(100*Math.sin(i*2*Math.PI/(numberOfButtons))));
-			    final ButtonInterface b = buttons[i];
-			    b.dim();
-			    button[i].setAction(new Action(){
+				public void act(){
+					if(acceptingInput && b == sequence.get(sequenceIndex).getAButton())
+					{
+						sequenceIndex++;
+					}
+					else
+					{
+						progress.gameOver();
+						return;
+					}
+					if( sequenceIndex == sequence.size())
+					{
+						Thread nextRound = new Thread(SimonScreenKristyLo.this);
+						nextRound.start(); 
+					}
+					Thread blink = new Thread(new Runnable(){
 
-			    	public void act(){
-			    		if(acceptingInput && button == sequence.get(sequenceIndex).getAButton())
-			    		{
-			    			sequenceIndex++;
-			    		}
-			    		else
-			    		{
-			    			gameOver();
-			    			return;
-			    		}
-			    		if( sequenceIndex == sequence.size())
-			    		{
-			    			Thread nextRound = new Thread(SimonScreenKristyLo.this);
-			    			nextRound.start(); 
-			    		}
-			    		Thread blink = new Thread(new Runnable(){
+						public void run(){
+							b.highlight();
+							try {
+								Thread.sleep(500);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							b.dim();
 
-			    			public void run(){
-			    				b.highlight();
-			    				try {
-			    					Thread.sleep(500);
-			    				} catch (InterruptedException e) {
-			    					e.printStackTrace();
-			    				}
-			    				b.dim();
-			    			
-			    			blink.start();
-			    		}
-			    });
-			    viewObjects.add(button[i]);
+						}
+					});
+					blink.start();
+					viewObjects.add(b);
 
-			
+
+				}
+
+
+
+			});
 		}
-		public void gameOver() {
-			progress.gameOver();
-    	}
-
-
+	}
 }

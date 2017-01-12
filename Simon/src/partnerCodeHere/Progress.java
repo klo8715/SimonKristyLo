@@ -17,6 +17,7 @@ public class Progress extends Components implements ProgressInterfaceKristyLo {
 		gameOver = false;
 	}
 
+
 	@Override
 	public void setSequenceLength(int size) {
 		this.sequence = size;

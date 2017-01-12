@@ -8,5 +8,5 @@ public interface ProgressInterfaceKristyLo extends Visible{
 	
 	public void setRound(int size);
 
-
+	public void gameOver();
 }
