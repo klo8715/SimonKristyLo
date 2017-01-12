@@ -18,10 +18,7 @@ private ButtonInterfaceKristyLo button;
 
 	@Override
 	public ButtonInterfaceKristyLo getAButton() {
-		// TODO Auto-generated method stub
-		return null;
+		return button;
 	}
-	
-	// getAButton should not be in ButtonInterface
 
 }
