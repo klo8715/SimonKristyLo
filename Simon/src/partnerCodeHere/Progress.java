@@ -51,4 +51,10 @@ public class Progress extends Components implements ProgressInterfaceKristyLo {
 		}
 	}
 
+
+	@Override
+	public void gameOver() {
+		gameOver = true;
+	}
+
 }
