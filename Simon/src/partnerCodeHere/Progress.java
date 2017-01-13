@@ -21,11 +21,13 @@ public class Progress extends Components implements ProgressInterfaceKristyLo {
 	@Override
 	public void setSequenceLength(int size) {
 		this.sequence = size;
+		update();
 	}
 
 	@Override
 	public void setRound(int x) {
 		this.round = x;
+		update();
 	}
 
 	@Override
