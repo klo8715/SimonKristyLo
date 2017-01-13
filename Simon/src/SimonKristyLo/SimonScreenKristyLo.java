@@ -11,6 +11,7 @@ import GUI.Components.Visible;
 import partnerCodeHere.Button;
 import partnerCodeHere.Move;
 import partnerCodeHere.Progress;
+import simonVicki.MoveInterfaceVicki;
 
 
 public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
@@ -38,12 +39,14 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 	private void nextRound() {
 		acceptingInput = false;
 		roundNumber ++;
+		progress.setRound(roundNumber);
 		sequence.add(randomMove());
 		progress.setSequenceLength(sequence.size());
-		progress.setRound(roundNumber);
-		changeText(" ");
+		changeText("Simon's turn.");
+		label.setText(" ");
 		playSequence();
 		changeText("Your Turn");
+		label.setText(" ");
 		acceptingInput = true;
 		sequenceIndex = 0;
 
@@ -61,59 +64,35 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 	}
 	private void playSequence()
 	{
-		ButtonInterfaceKristyLo b = null;
-		for(MoveInterfaceKristyLo v: sequence){
-			if(b!= null)b.dim();
-			b = v.getAButton();
-			b.highlight();
-			try {
-				Thread.sleep((long)(2000*(2.0/(roundNumber+2))));
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+//		ButtonInterfaceKristyLo b = null;
+//		for(MoveInterfaceKristyLo v: sequence){
+//			if(b!= null)b.dim();
+//			b = v.getAButton();
+//			b.highlight();
+//			try {
+//				Thread.sleep((long)(2000*(2.0/(roundNumber+2))));
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		b.dim();
+			ButtonInterfaceKristyLo b = null;
+			for(MoveInterfaceKristyLo m: sequence){
+				if(b!=null)b.dim();
+				b = m.getAButton();
+				b.highlight();
+				try {
+					Thread.sleep((long)(2000*(2.0/(roundNumber+2))));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
+			b.dim();
 		}
-		b.dim();
 
-	}
 
 	@Override
 	public void initAllObjects(List<Visible> viewObjects) {
-		addButtons(viewObjects);
-		progress = getProgress();
-		label = new TextLabel(130,230,300,40,"Let's play Simon!");
-		sequence = new ArrayList<MoveInterfaceKristyLo>();
-		//add 2 moves to start
-		lastSelectedButton = -1;
-		sequence.add(randomMove());
-		sequence.add(randomMove());
-		roundNumber = 0;
-		viewObjects.add(progress);
-		viewObjects.add(label);
-
-
-	}
-
-	private MoveInterfaceKristyLo randomMove() {
-		int random = (int) (Math.random() * button.length);
-		if (random == lastSelectedButton) {
-			random = (int) (Math.random() * button.length);
-		}
-		lastSelectedButton = random;
-		return new Move(button[lastSelectedButton]);
-	}
-
-	private ProgressInterfaceKristyLo getProgress() {
-		return new Progress(40,40,200,60);
-	}
-
-	public ButtonInterfaceKristyLo getAButton(){
-		return new Button();
-	}
-
-	private void addButtons(List<Visible> viewObjects) {
-		/**
-		Placeholder until partner finishes implementation of ProgressInterface
-		 */
 		int numOfButtons = 4;
 		Color[] colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
 		button = new ButtonInterfaceKristyLo[numOfButtons];
@@ -126,20 +105,6 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 			button[i].setAction(new Action(){
 
 				public void act(){
-					if(acceptingInput && b == sequence.get(sequenceIndex).getAButton())
-					{
-						sequenceIndex++;
-					}
-					else
-					{
-						progress.gameOver();
-						return;
-					}
-					if( sequenceIndex == sequence.size())
-					{
-						Thread nextRound = new Thread(SimonScreenKristyLo.this);
-						nextRound.start(); 
-					}
 					Thread blink = new Thread(new Runnable(){
 
 						public void run(){
@@ -154,7 +119,20 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 						}
 					});
 					blink.start();
-					viewObjects.add(b);
+					if(acceptingInput && b == sequence.get(sequenceIndex).getAButton())
+					{
+						sequenceIndex++;
+					}
+					else if (acceptingInput)
+						{
+							progress.gameOver();
+							return;
+						}
+					if( sequenceIndex == sequence.size())
+					{
+						Thread nextRound = new Thread(SimonScreenKristyLo.this);
+						nextRound.start(); 
+					}
 
 
 				}
@@ -162,6 +140,36 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 
 
 			});
+			viewObjects.add(b);
 		}
+		label = new TextLabel(130,230,300,40,"Let's play Simon!");
+		sequence = new ArrayList<MoveInterfaceKristyLo>();
+		//add 2 moves to start
+		lastSelectedButton = -1;
+		sequence.add(randomMove());
+		sequence.add(randomMove());
+		roundNumber = 0;
+		viewObjects.add(progress);
+		viewObjects.add(label);
+
+
 	}
+
+	private MoveInterfaceKristyLo randomMove() {
+		int select = (int) (Math.random()*button.length);
+		while(select == lastSelectedButton){
+			select = (int) (Math.random()*button.length);
+		}
+		lastSelectedButton = select;
+		return new Move(button[select]);
+	}
+
+	private ProgressInterfaceKristyLo getProgress() {
+		return new Progress(40,40,200,60);
+	}
+
+	public ButtonInterfaceKristyLo getAButton(){
+		return new Button();
+	}
+
 }
