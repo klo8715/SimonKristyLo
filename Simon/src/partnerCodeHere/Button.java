@@ -12,9 +12,12 @@ public class Button extends Components implements SimonKristyLo.ButtonInterfaceK
 	private Action action;
 	private Color c;
 	private boolean highlight;
+	private static int x;
+	private static int y;
+	
 	
 	public Button() {
-		super(0,0,70,70);
+		super(x+20, y+100, 100, 100);
 		highlight = false;
 	}
 
@@ -72,6 +75,19 @@ public class Button extends Components implements SimonKristyLo.ButtonInterfaceK
 	@Override
 	public void dim() {
 		highlight = false;
+		update();
+	}
+
+	@Override
+	public void setX(int i) {
+		this.x = i;
+		update();
+
+	}
+
+	@Override
+	public void setY(int i) {
+		this.y = i;
 		update();
 	}
 }

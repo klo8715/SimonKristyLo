@@ -12,8 +12,8 @@ public class Progress extends Components implements ProgressInterfaceKristyLo {
 	private int round;
 	private int sequence;
 
-	public Progress(int x, int y, int w, int h) {
-		super(x, y, w, h);
+	public Progress() {
+		super(325, 150, 200, 100);
 		gameOver = false;
 	}
 

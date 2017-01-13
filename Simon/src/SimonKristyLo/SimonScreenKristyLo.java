@@ -11,7 +11,7 @@ import GUI.Components.Visible;
 import partnerCodeHere.Button;
 import partnerCodeHere.Move;
 import partnerCodeHere.Progress;
-import simonVicki.MoveInterfaceVicki;
+import SimonKristyLo.MoveInterfaceKristyLo;
 
 
 public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
@@ -100,6 +100,8 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 		for (int i = 0; i < numOfButtons; i++) {
 			button[i] = getAButton();
 			button[i].setColor(colors[i]);
+			button[i].setX(160 + (int)(100*Math.cos(i*2*Math.PI/(numOfButtons))));
+			button[i].setY(200 - (int)(100*Math.sin(i*2*Math.PI/(numOfButtons))));
 			final ButtonInterfaceKristyLo b = button[i];
 			b.dim();
 			button[i].setAction(new Action(){
@@ -165,7 +167,7 @@ public class SimonScreenKristyLo extends ClickableScreen implements Runnable{
 	}
 
 	private ProgressInterfaceKristyLo getProgress() {
-		return new Progress(40,40,200,60);
+		return new Progress();
 	}
 
 	public ButtonInterfaceKristyLo getAButton(){
